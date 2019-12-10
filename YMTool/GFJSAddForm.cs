@@ -28,7 +28,7 @@ namespace YMTool
                 if (res.Rows.Count > 0)
                 {
                     ZhanjieInput.Text = res.Rows[0]["ZHANJIE"].ToString();
-                    dateTimePicker1.Value = DateTime.Parse(res.Rows[0]["CREATETIME"].ToString());
+                    dateTimePicker1.Value = Convert.ToDateTime(res.Rows[0]["CREATETIME"]);
                     GoldInput.Text = res.Rows[0]["GOLD"].ToString();
                     BreakInput.Text = res.Rows[0]["BREAK"].ToString();
                     checkBoxJiesuan.Checked = bool.Parse(res.Rows[0]["JIESUAN"].ToString());
@@ -102,12 +102,12 @@ namespace YMTool
                 //编辑
                 if (EditId != 0)
                 {
-                    res = accessHelper.ExecuteNonQuery(string.Format("UPDATE YM_DETAIL SET [ZHANJIE] = {0}, [CREATETIME] = '{1}', [YM_USER_ID] = {2}, [GOLD] = {3}, [BREAK] = '{4}', [JIESUAN] = {5} WHERE [ID] = {6};", zjvalue, dateTimePicker1.Value, comValue.Values, goldvalue, string.IsNullOrWhiteSpace(BreakInput.Text) ? "" : BreakInput.Text, check ? 1 : 0, EditId));
+                    res = accessHelper.ExecuteNonQuery(string.Format("UPDATE YM_DETAIL SET [ZHANJIE] = {0}, [CREATETIME] = #{1}#, [YM_USER_ID] = {2}, [GOLD] = {3}, [BREAK] = '{4}', [JIESUAN] = {5} WHERE [ID] = {6};", zjvalue, dateTimePicker1.Value.ToString("yyyy/MM/dd"), comValue.Values, goldvalue, string.IsNullOrWhiteSpace(BreakInput.Text) ? "" : BreakInput.Text, check ? 1 : 0, EditId));
                 }
                 //新增
                 else
                 {
-                    res = accessHelper.ExecuteNonQuery(String.Format("INSERT INTO YM_DETAIL ([ZHANJIE], [CREATETIME], [YM_USER_ID], [GOLD], [BREAK], [JIESUAN]) VALUES ({0}, '{1}', {2}, {3}, '{4}', {5});", zjvalue, dateTimePicker1.Value, comValue.Values, goldvalue, string.IsNullOrWhiteSpace(BreakInput.Text) ? "" : BreakInput.Text, check ? 1 : 0));
+                    res = accessHelper.ExecuteNonQuery(String.Format("INSERT INTO YM_DETAIL ([ZHANJIE], [CREATETIME], [YM_USER_ID], [GOLD], [BREAK], [JIESUAN]) VALUES ({0}, {1}, {2}, {3}, '{4}', {5});", zjvalue, dateTimePicker1.Value.ToString("yyyy/MM/dd"), comValue.Values, goldvalue, string.IsNullOrWhiteSpace(BreakInput.Text) ? "" : BreakInput.Text, check ? 1 : 0));
                 }
                 if (res > 0)
                 {

@@ -77,12 +77,12 @@ namespace YMTool
                     Text = (i + 1).ToString()
                 };
                 //第二列
-                list.SubItems.Add(item["Zhanjie"].ToString());
                 list.SubItems.Add(listComBox.FirstOrDefault(p => p.Values == item["YM_USER_ID"].ToString()).Text);
-                list.SubItems.Add(item["CreateTime"].ToString());
+                list.SubItems.Add(item["Zhanjie"].ToString());
+                list.SubItems.Add(Convert.ToDateTime(item["CreateTime"]).ToString("yyyy/MM/dd"));
                 list.SubItems.Add(item["Gold"].ToString());
+                list.SubItems.Add(Convert.ToBoolean(item["Jiesuan"]) ? "已结算" : "未结算");
                 list.SubItems.Add(item["Break"].ToString());
-                list.SubItems.Add(item["Jiesuan"].ToString());
                 //隐藏的列
                 list.SubItems.Add(item["ID"].ToString());
                 this.listViewDetails.Items.Add(list);
@@ -104,11 +104,11 @@ namespace YMTool
             }
             if (this.dateTimePickerStart.Checked)
             {
-                sb.AppendFormat(" AND CREATETIME <= '{0}'", this.dateTimePickerStart.Value);
+                sb.AppendFormat(" AND CREATETIME >= #{0}#", this.dateTimePickerStart.Value.ToString("yyyy/MM/dd"));
             }
             if (this.dateTimePickerEnd.Checked)
             {
-                sb.AppendFormat(" AND CREATETIME >= '{0}'", this.dateTimePickerEnd.Value);
+                sb.AppendFormat(" AND CREATETIME <= #{0}#", this.dateTimePickerEnd.Value.ToString("yyyy/MM/dd"));
             }
             sb.Append(";");
             DataTable res = accessHelper.ExecuteDataTable(sb.ToString());
